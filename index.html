@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surat Natal Interaktif</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #FFFFFF;
+      font-family: "Poppins", sans-serif;
+      user-select: none;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Video background */
+    #video-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .envelope-container {
+      position: relative;
+      width: 500px;
+      height: 380px;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    /* Amplop */
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: #d62c2c;
+      background-size: 120px;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      transition: transform 0.5s ease;
+      z-index: 1;
+    }
+
+    .envelope.opened { transform: translateY(-40px); }
+
+    /* Tutup amplop */
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #b71f1f;
+      clip-path: polygon(0 0, 100% 0, 50% 50%);
+      transform-origin: top;
+      transition: transform 0.5s ease;
+      z-index: 3;
+    }
+
+    .flap.opened { transform: rotateX(180deg); }
+
+    /* Seal */
+    .seal {
+      position: absolute;
+      top: 95px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      color: #d62c2c;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: opacity 0.4s ease;
+      z-index: 4;
+    }
+
+    .seal.hidden { opacity: 0; pointer-events: none; }
+
+    /* Surat */
+    .letter {
+      position: absolute;
+      width: 90%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      opacity: 0;
+      transition: all 0.6s ease;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .letter.show {
+      opacity: 1;
+      transform: translate(-50%, -10%) scale(1);
+    }
+
+    .letter h2 { margin-top: 0; color: #d62c2c; }
+    .letter p { line-height: 1.6; font-size: 16px; color: #333; }
+
+    /* Tombol pohon natal */
+    #christmas-tree {
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+      width: 80px;
+      height: 120px;
+      background: url('https://i.ibb.co/xsXv0MN/christmas-tree.png') no-repeat center center;
+      background-size: contain;
+      cursor: pointer;
+      z-index: 6;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Video background -->
+<video id="video-bg" autoplay muted loop></video>
+<audio id="bg-music" loop></audio>
+
+<!-- Amplop dan surat -->
+<div class="envelope-container" id="openButton">
+  <div class="envelope" id="envelope"></div>
+  <div class="flap" id="flap"></div>
+  <div class="seal" id="seal">🎄</div>
+  
+  <div class="letter" id="letter">
+    <h2>Merry Christmas My Love</h2>
+    <p>
+      Merry Christmas, Fio.<br><br>
+      This is the first time I've celebrated Christmas with someone who loves me the way you do.<br>
+      I hope you are always healthy, and I hope you stay far away from problems.<br><br>
+      From Lucas,<br>
+      <span style="color: red; font-weight: bold;">I love you.</span>
+    </p>
+  </div>
+</div>
+
+<!-- Pohon natal klikable -->
+<div id="christmas-tree" title="Klik pohon Natal"></div>
+
+<script>
+  // Amplop
+  const flap = document.getElementById("flap");
+  const envelope = document.getElementById("envelope");
+  const seal = document.getElementById("seal");
+  const letter = document.getElementById("letter");
+  const open = document.getElementById("openButton");
+  let opened = false;
+
+  open.addEventListener("click", () => {
+    if (!opened) {
+      seal.classList.add("hidden");
+      flap.classList.add("opened");
+      envelope.classList.add("opened");
+      setTimeout(() => { letter.classList.add("show"); }, 400);
+      opened = true;
+    }
+  });
+
+  // Pohon natal klik
+  const tree = document.getElementById("christmas-tree");
+  const video = document.getElementById("video-bg");
+  const audio = document.getElementById("bg-music");
+
+  tree.addEventListener("click", () => {
+    // Video
+    video.src = "video-background.mp4"; // pastikan file di repositori
+    video.style.display = "block";
+    video.style.opacity = 0;
+    video.loop = true; // loop video
+    video.play();
+    setTimeout(() => { video.style.opacity = 1; }, 50);
+
+    // Audio
+    audio.src = "backsound.mp3"; // pastikan file di repositori
+    audio.volume = 1;
+    audio.loop = true; // loop audio
+    audio.play();
+  });
+</script>
+
+</body>
+</html>
